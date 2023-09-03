@@ -29,15 +29,9 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
   return base64encode(digest);
 }
 
-const codeVerifier = generateRandomString(128);
-
-let urlParams = new URLSearchParams();
-
-if (typeof window !== "undefined") {
-  urlParams = new URLSearchParams(window.location.search);
-}
-
 export const authorize = async () => {
+  const codeVerifier = generateRandomString(128);
+
   generateCodeChallenge(codeVerifier).then((codeChallenge) => {
     const state: string = generateRandomString(16);
     const scope: string = "user-read-private user-read-email";
@@ -58,8 +52,8 @@ export const authorize = async () => {
   });
 };
 
-export const getToken = async (code: string) => {
-  const codeVerifier = sessionStorage.getItem("code_verifier");
+export const getAccessToken = async (code: string) => {
+  const codeVerifier = localStorage.getItem("code_verifier");
 
   const body = new URLSearchParams({
     grant_type: "authorization_code" || "",
@@ -77,8 +71,7 @@ export const getToken = async (code: string) => {
       },
       body: body,
     });
-
-    return response.json();
+    return await response.json();
   } catch (error) {
     window.location.href = "/";
     console.error("Error:", error);

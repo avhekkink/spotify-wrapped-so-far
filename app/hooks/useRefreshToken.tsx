@@ -1,7 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 
-import { getToken, refreshSpotifyToken } from "@/app/utils/authorization";
+import { getAccessToken, refreshSpotifyToken } from "@/app/utils/authorization";
 
 export default function useRefreshToken(code: string) {
   const [expiresIn, setExpiresIn] = useState(0);
@@ -9,11 +9,16 @@ export default function useRefreshToken(code: string) {
   const [refreshToken, setRefreshToken] = useState("");
 
   const fetchToken = async () => {
-    let response = await getToken(code);
-    setRefreshToken(response.refresh_token);
-    setAccessToken(response.access_token);
-    setExpiresIn(response.expires_in);
-    sessionStorage.setItem("access_token", response.access_token);
+    if (code) {
+      let response = await getAccessToken(code);
+
+      if (response) {
+        setRefreshToken(response.refresh_token);
+        setAccessToken(response.access_token);
+        setExpiresIn(response.expires_in);
+        sessionStorage.setItem("access_token", response.access_token);
+      }
+    }
   };
 
   const refreshTokenFn = async () => {

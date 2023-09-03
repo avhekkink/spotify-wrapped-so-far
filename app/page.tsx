@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { authorize, getToken } from "@/app/utils/authorization";
+import { authorize } from "@/app/utils/authorization";
 import useRefreshToken from "@/app/hooks/useRefreshToken";
 import { useSearchParams } from "next/navigation";
 
@@ -14,11 +14,11 @@ const Home = () => {
     <div className="w-full p-4">
       <main className="w-full flex flex-col h-screen content-center justify-center">
         <div className="w-full sm:w-1/2 lg:w-1/3 rounded-lg m-auto">
-          <div className="bg-white rounded shadow px-4 pt-5 pb-4 sm:p-6 sm:pb-4 flex justify-center">
+          <div className="bg-green-500 rounded-full shadow p-4 flex justify-center">
             {code ? (
-              <Link href="/dashboard">Click To Enter</Link>
+              <Link href="/dashboard">Continue</Link>
             ) : (
-              <button onClick={authorize} className="btn btn-accent">
+              <button onClick={authorize} className="btn btn-accent font-bold">
                 Connect Your Spotify
               </button>
             )}
