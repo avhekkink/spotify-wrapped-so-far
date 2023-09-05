@@ -1,7 +1,10 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { fetchProfile } from "../utils/apiRequests";
+import {
+  fetchProfile,
+  fetchTop10ArtistsLast6Months,
+} from "../utils/apiRequests";
 
 const Dashboard = () => {
   interface UserProfile {
@@ -13,8 +16,20 @@ const Dashboard = () => {
     profile_image_url: string | undefined;
   }
 
+  interface Artist {
+    link_to_spotify_page: string;
+    genres: string[];
+    profile_image_url: string;
+    name: string;
+    id: string;
+    popularity: number;
+  }
+
   const [accessToken, setAccessToken] = useState("");
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [top10artistsThisMonth, setTop10ArtistsThisMonth] = useState<Artist[]>(
+    []
+  );
 
   useEffect(() => {
     let token = sessionStorage.getItem("access_token");
@@ -22,7 +37,7 @@ const Dashboard = () => {
   }, []);
 
   const getProfile = async (accessToken: string) => {
-    let response = accessToken && (await fetchProfile(accessToken));
+    const response = accessToken && (await fetchProfile(accessToken));
 
     response &&
       setProfile({
@@ -35,13 +50,35 @@ const Dashboard = () => {
       });
   };
 
+  const getTop10ArtistsLast6Months = async (accessToken: string) => {
+    const response =
+      accessToken && (await fetchTop10ArtistsLast6Months(accessToken));
+
+    response &&
+      setTop10ArtistsThisMonth(
+        response.items.map((artist: any): Artist => {
+          return {
+            link_to_spotify_page: artist.external_urls?.spotify,
+            genres: artist.genres,
+            profile_image_url: artist?.images[0]?.url,
+            name: artist.name,
+            id: artist.id,
+            popularity: artist.popularity,
+          };
+        })
+      );
+  };
+
   useEffect(() => {
     getProfile(accessToken);
+    getTop10ArtistsLast6Months(accessToken);
   }, [accessToken]);
+
+  console.log(top10artistsThisMonth);
 
   return (
     <div className="flex-col">
-      <div className="flex justify-center p-6 bg-green-500 w-full">
+      <div className="flex justify-center p-6 bg-green-400 w-full">
         <h1 className="font-bold text-xl">Your Spotify Wrapped So Far</h1>
       </div>
       {profile ? (
@@ -77,6 +114,20 @@ const Dashboard = () => {
             </svg>
             Spotify
           </a>
+        </div>
+      ) : null}
+      {top10artistsThisMonth ? (
+        <div className="bg-gray-50 rounded-xl w-fit px-4 mx-auto mt-10">
+          <h2 className="font-bold text-lg p-4">
+            Your Top Artists Over The Last 6 Months
+          </h2>
+          <ol className="list-decimal list-inside p-4">
+            {top10artistsThisMonth.map((artist) => (
+              <li key={artist.id} className="p-2">
+                {artist.name}
+              </li>
+            ))}
+          </ol>
         </div>
       ) : null}
     </div>
