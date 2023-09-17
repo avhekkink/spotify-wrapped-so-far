@@ -75,8 +75,6 @@ const Dashboard = () => {
     getTop10ArtistsLast6Months(accessToken);
   }, [accessToken]);
 
-  console.log(top10artistsThisMonth);
-
   return (
     <div className="flex-col">
       <div className="flex justify-center p-2 bg-[#1DB954] w-full">

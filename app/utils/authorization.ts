@@ -82,8 +82,6 @@ export const getAccessToken = async (code: string) => {
   const codeVerifier = localStorage.getItem("code_verifier");
   const redirectUri = localStorage.getItem("redirect_uri");
 
-  console.log("redirectUri: ", redirectUri);
-
   const body = new URLSearchParams({
     grant_type: "authorization_code" || "",
     code: code || "",
@@ -114,7 +112,6 @@ export const refreshSpotifyToken = async (refresh_token: string) => {
     client_id: SPOTIFY_CLIENT_ID || "",
   });
   try {
-    console.log("got here");
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
