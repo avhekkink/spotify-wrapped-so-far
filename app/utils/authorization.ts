@@ -35,7 +35,7 @@ export const authorize = async () => {
 
   // Define the base URL for your web app
   const baseUrl = isVercelPreview
-    ? `http://${process.env.NEXT_PUBLIC_VERCEL_ENV}`
+    ? `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : "http://localhost:3000";
 
   // Construct the dynamic redirectUri
