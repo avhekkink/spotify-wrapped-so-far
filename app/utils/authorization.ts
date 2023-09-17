@@ -31,10 +31,12 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
 export const authorize = async () => {
   const codeVerifier = generateRandomString(128);
 
-  const isVercelPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+  const isVercelEitherPreviewOrProd =
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+    process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
 
   // Define the base URL for your web app
-  const baseUrl = isVercelPreview
+  const baseUrl = isVercelEitherPreviewOrProd
     ? `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`
     : "http://localhost:3000";
 
@@ -80,6 +82,8 @@ export const authorize = async () => {
 export const getAccessToken = async (code: string) => {
   const codeVerifier = localStorage.getItem("code_verifier");
   const redirectUri = localStorage.getItem("redirect_uri");
+
+  console.log("redirectUri: ", redirectUri);
 
   const body = new URLSearchParams({
     grant_type: "authorization_code" || "",
