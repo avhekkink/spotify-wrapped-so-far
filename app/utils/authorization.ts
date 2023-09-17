@@ -1,5 +1,14 @@
 const SPOTIFY_CLIENT_ID: string = "81f30010134047e194e7e7f748721d40";
-const redirectUri: string = "http://localhost:3000";
+
+const isVercelPreview = process.env.VERCEL_ENV === "preview";
+
+// Define the base URL for your web app
+const baseUrl = isVercelPreview
+  ? process.env.VERCEL_URL
+  : "http://localhost:3000";
+
+// Construct the dynamic redirectUri
+const redirectUri: string = `${baseUrl}/dashboard`;
 
 function generateRandomString(length: number) {
   let text = "";
@@ -31,6 +40,16 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
 
 export const authorize = async () => {
   const codeVerifier = generateRandomString(128);
+
+  // For dev reference, can be removed when no longer needed
+  localStorage.setItem(
+    "vercel_env",
+    process.env.VERCEL_ENV ? process.env.VERCEL_ENV : "dev"
+  );
+  localStorage.setItem(
+    "vercel_url",
+    process.env.VERCEL_URL ? process.env.VERCEL_URL : "dev"
+  );
 
   generateCodeChallenge(codeVerifier).then((codeChallenge) => {
     const state: string = generateRandomString(16);
