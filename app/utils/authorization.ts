@@ -56,7 +56,6 @@ export const authorize = async () => {
       ? process.env.NEXT_PUBLIC_VERCEL_URL
       : "value is undefined"
   );
-  console.log("redirectUri: ", redirectUri);
   localStorage.setItem("redirect_uri", redirectUri);
 
   generateCodeChallenge(codeVerifier).then((codeChallenge) => {

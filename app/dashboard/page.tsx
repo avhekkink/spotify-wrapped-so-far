@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import Image from "next/image";
 import {
   fetchProfile,
   fetchTop10ArtistsLast6Months,
@@ -78,8 +79,8 @@ const Dashboard = () => {
 
   return (
     <div className="flex-col">
-      <div className="flex justify-center p-6 bg-green-400 w-full">
-        <h1 className="font-bold text-xl">Your Spotify Wrapped So Far</h1>
+      <div className="flex justify-center p-2 bg-[#1DB954] w-full">
+        <h1 className="font-bold text-xl">Your recent listening</h1>
       </div>
       {profile ? (
         <div className="flex m-5 items-center justify-between">
@@ -96,30 +97,21 @@ const Dashboard = () => {
           <a
             href={profile?.link_to_spotify_page}
             target="_blank"
-            className="flex items-center text-black bg-green-500 hover:bg-green-600 font-bold rounded-full text-sm px-5 py-2.5 dark:hover:bg-green-600 w-fit"
+            className="flex items-center w-fit bg-black p-2 rounded-full"
           >
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              strokeWidth="1.5"
-              stroke="currentColor"
-              className="w-4 h-4 mr-1"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M13.5 6H5.25A2.25 2.25 0 003 8.25v10.5A2.25 2.25 0 005.25 21h10.5A2.25 2.25 0 0018 18.75V10.5m-10.5 6L21 3m0 0h-5.25M21 3v5.25"
-              />
-            </svg>
-            Spotify
+            <Image
+              src="/Spotify_Logo_RGB_Green.png"
+              alt="Spotify logo in green"
+              width="105"
+              height="45"
+            />
           </a>
         </div>
       ) : null}
       {top10artistsThisMonth ? (
         <div className="bg-gray-50 rounded-xl w-fit px-4 mx-auto mt-10">
           <h2 className="font-bold text-lg p-4">
-            Your Top Artists Over The Last 6 Months
+            Top Artists Over The Last 6 Months
           </h2>
           <ol className="list-decimal list-inside p-4">
             {top10artistsThisMonth.map((artist) => (
