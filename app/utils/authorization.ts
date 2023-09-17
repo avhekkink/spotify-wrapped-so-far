@@ -1,15 +1,5 @@
 const SPOTIFY_CLIENT_ID: string = "81f30010134047e194e7e7f748721d40";
 
-const isVercelPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
-
-// Define the base URL for your web app
-const baseUrl = isVercelPreview
-  ? `http://${process.env.NEXT_PUBLIC_VERCEL_ENV}`
-  : "http://localhost:3000";
-
-// Construct the dynamic redirectUri
-const redirectUri: string = `${baseUrl}/dashboard`;
-
 function generateRandomString(length: number) {
   let text = "";
   let possible =
@@ -41,6 +31,16 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
 export const authorize = async () => {
   const codeVerifier = generateRandomString(128);
 
+  const isVercelPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+
+  // Define the base URL for your web app
+  const baseUrl = isVercelPreview
+    ? `http://${process.env.NEXT_PUBLIC_VERCEL_ENV}`
+    : "http://localhost:3000";
+
+  // Construct the dynamic redirectUri
+  const redirectUri: string = `${baseUrl}/`;
+
   // For dev reference, can be removed when no longer needed
   localStorage.setItem(
     "next_public_vercel_env",
@@ -54,6 +54,8 @@ export const authorize = async () => {
       ? process.env.NEXT_PUBLIC_VERCEL_URL
       : "value is undefined"
   );
+  console.log("redirectUri: ", redirectUri);
+  localStorage.setItem("redirect_uri", redirectUri);
 
   generateCodeChallenge(codeVerifier).then((codeChallenge) => {
     const state: string = generateRandomString(16);
@@ -77,6 +79,7 @@ export const authorize = async () => {
 
 export const getAccessToken = async (code: string) => {
   const codeVerifier = localStorage.getItem("code_verifier");
+  const redirectUri = localStorage.getItem("redirect_uri");
 
   const body = new URLSearchParams({
     grant_type: "authorization_code" || "",
@@ -108,6 +111,7 @@ export const refreshSpotifyToken = async (refresh_token: string) => {
     client_id: SPOTIFY_CLIENT_ID || "",
   });
   try {
+    console.log("got here");
     const response = await fetch("https://accounts.spotify.com/api/token", {
       method: "POST",
       headers: {
