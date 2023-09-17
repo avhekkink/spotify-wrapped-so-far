@@ -1,10 +1,10 @@
 const SPOTIFY_CLIENT_ID: string = "81f30010134047e194e7e7f748721d40";
 
-const isVercelPreview = process.env.VERCEL_ENV === "preview";
+const isVercelPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
 
 // Define the base URL for your web app
 const baseUrl = isVercelPreview
-  ? process.env.VERCEL_URL
+  ? `http://${process.env.NEXT_PUBLIC_VERCEL_ENV}`
   : "http://localhost:3000";
 
 // Construct the dynamic redirectUri
@@ -43,12 +43,16 @@ export const authorize = async () => {
 
   // For dev reference, can be removed when no longer needed
   localStorage.setItem(
-    "vercel_env",
-    process.env.VERCEL_ENV ? process.env.VERCEL_ENV : "dev"
+    "next_public_vercel_env",
+    process.env.NEXT_PUBLIC_VERCEL_ENV
+      ? process.env.NEXT_PUBLIC_VERCEL_ENV
+      : "value is undefined"
   );
   localStorage.setItem(
-    "vercel_url",
-    process.env.VERCEL_URL ? process.env.VERCEL_URL : "dev"
+    "next_public_vercel_url",
+    process.env.NEXT_PUBLIC_VERCEL_URL
+      ? process.env.NEXT_PUBLIC_VERCEL_URL
+      : "value is undefined"
   );
 
   generateCodeChallenge(codeVerifier).then((codeChallenge) => {
