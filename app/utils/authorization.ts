@@ -31,14 +31,20 @@ async function generateCodeChallenge(codeVerifier: string): Promise<string> {
 export const authorize = async () => {
   const codeVerifier = generateRandomString(128);
 
-  const isVercelEitherPreviewOrProd =
-    process.env.NEXT_PUBLIC_VERCEL_ENV === "preview" ||
+  const isVercelPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
+
+  const isVercelProduction =
     process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
 
   // Define the base URL for your web app
-  const baseUrl = isVercelEitherPreviewOrProd
-    ? `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`
-    : "http://localhost:3000";
+  let baseUrl;
+  if (isVercelPreview) {
+    baseUrl = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+  } else if (isVercelProduction) {
+    baseUrl = "http://spotify-wrapped-so-far.vercel.app";
+  } else {
+    baseUrl = "http://localhost:3000";
+  }
 
   // Construct the dynamic redirectUri
   const redirectUri: string = `${baseUrl}/`;
