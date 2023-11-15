@@ -5,7 +5,9 @@ import Image from "next/image";
 import {
   fetchProfile,
   fetchTop10ArtistsLast6Months,
+  fetchTop10TracksLast6Months,
 } from "../utils/apiRequests";
+import TracksListItem from "@/components/TracksListItem";
 
 const Dashboard = () => {
   interface UserProfile {
@@ -18,16 +20,28 @@ const Dashboard = () => {
   }
 
   interface Artist {
-    link_to_spotify_page: string;
-    genres: string[];
-    profile_image_url: string;
-    name: string;
     id: string;
+    link_to_spotify_page: string;
+    profile_image_url: string;
+    artist_name: string;
+    genres: string[];
+    popularity: number;
+  }
+
+  interface Track {
+    id: string;
+    link_to_spotify_page: string;
+    thumbnail_image_url: string;
+    track_name: string;
+    artist_name: string;
     popularity: number;
   }
 
   const [accessToken, setAccessToken] = useState("");
   const [profile, setProfile] = useState<UserProfile | null>(null);
+  const [top10TracksLast6Months, setTop10TracksLast6Months] = useState<Track[]>(
+    []
+  );
   const [top10artistsThisMonth, setTop10ArtistsThisMonth] = useState<Artist[]>(
     []
   );
@@ -59,12 +73,31 @@ const Dashboard = () => {
       setTop10ArtistsThisMonth(
         response.items.map((artist: any): Artist => {
           return {
-            link_to_spotify_page: artist.external_urls?.spotify,
-            genres: artist.genres,
-            profile_image_url: artist?.images[0]?.url,
-            name: artist.name,
             id: artist.id,
+            link_to_spotify_page: artist.external_urls?.spotify,
+            profile_image_url: artist?.images[0]?.url,
+            artist_name: artist.name,
+            genres: artist.genres,
             popularity: artist.popularity,
+          };
+        })
+      );
+  };
+
+  const getTop10TracksLast6Months = async (accessToken: string) => {
+    const response =
+      accessToken && (await fetchTop10TracksLast6Months(accessToken));
+
+    response &&
+      setTop10TracksLast6Months(
+        response.items.map((track: any): Track => {
+          return {
+            id: track.id,
+            link_to_spotify_page: track.external_urls?.spotify,
+            thumbnail_image_url: track.album?.images[2]?.url,
+            track_name: track.name,
+            artist_name: track.artists[0]?.name,
+            popularity: track.popularity,
           };
         })
       );
@@ -73,13 +106,11 @@ const Dashboard = () => {
   useEffect(() => {
     getProfile(accessToken);
     getTop10ArtistsLast6Months(accessToken);
+    getTop10TracksLast6Months(accessToken);
   }, [accessToken]);
 
   return (
     <div className="flex-col">
-      <div className="flex justify-center p-2 bg-[#1DB954] w-full">
-        <h1 className="font-bold text-xl">Your recent listening</h1>
-      </div>
       {profile ? (
         <div className="flex m-5 items-center justify-between">
           <div className="flex items-center">
@@ -88,7 +119,7 @@ const Dashboard = () => {
               src={profile?.profile_image_url}
               alt="profile picture avatar"
             />
-            <h2 className="text-white font-bold text-lg">
+            <h2 className="text-white font-semibold text-lg">
               {profile?.display_name}
             </h2>
           </div>
@@ -106,20 +137,20 @@ const Dashboard = () => {
           </a>
         </div>
       ) : null}
-      {top10artistsThisMonth ? (
-        <div className="bg-gray-50 rounded-xl w-fit px-4 mx-auto mt-10">
-          <h2 className="font-bold text-lg p-4">
-            Top Artists Over The Last 6 Months
-          </h2>
-          <ol className="list-decimal list-inside p-4">
-            {top10artistsThisMonth.map((artist) => (
-              <li key={artist.id} className="p-2">
-                {artist.name}
-              </li>
-            ))}
-          </ol>
-        </div>
-      ) : null}
+      <div className="flex m-5 items-center justify-between">
+        {top10TracksLast6Months ? (
+          <div className="bg-black rounded-xl w-fit px-4 mx-auto mt-10 border border-grey">
+            <h2 className="font-bold text-lg p-4 text-white">
+              Top Tracks Over The Last 6 Months
+            </h2>
+            <ol className="list-decimal list-inside p-4">
+              {top10TracksLast6Months.map((track) => (
+                <TracksListItem track={track} key={track.id} className="my-4" />
+              ))}
+            </ol>
+          </div>
+        ) : null}
+      </div>
     </div>
   );
 };

@@ -1,9 +1,9 @@
 import "./globals.css";
 import type { Metadata } from "next";
 // Used for font optimization
-import { Inter } from "next/font/google";
+import { Roboto_Mono } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Roboto_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Spotify Wrapped So Far",
@@ -18,17 +18,23 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        {children}
-        <footer className="p-2 text-slate-200 font-thin fixed bottom-0">
-          Photo by{" "}
-          <a href="https://unsplash.com/@silivan?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">
-            Silivan Munguarakarama
-          </a>{" "}
-          on{" "}
-          <a href="https://unsplash.com/photos/NrR9gn3lFKU?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">
-            Unsplash
-          </a>
-        </footer>
+        <div className="flex flex-col h-screen min-h-screen">
+          <header className="h-24 border border-grey p-4">
+            <h1 className="text-white text-2xl">The Music You Love</h1>
+            <h4 className="text-white text-xs">
+              Explore your favourite tracks and artists
+            </h4>
+          </header>
+          {children}
+          <footer className="h-16 flex-none border border-grey">
+            <div className="p-4">
+              <h2 className="text-white text-sm"> Spotify Wrapped So Far</h2>
+              <h4 className="text-white text-xs">
+                Your favourite music on demand!
+              </h4>
+            </div>
+          </footer>
+        </div>
       </body>
     </html>
   );
