@@ -1,14 +1,6 @@
 import Image from "next/image";
 import * as React from "react";
-
-interface Track {
-  id: string;
-  link_to_spotify_page: string;
-  thumbnail_image_url: string;
-  track_name: string;
-  artist_name: string;
-  popularity: number;
-}
+import { Track } from "../dashboard/page";
 
 interface TracksListItemProps {
   className?: string;

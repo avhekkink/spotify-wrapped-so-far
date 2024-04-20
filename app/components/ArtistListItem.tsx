@@ -1,0 +1,41 @@
+import Image from "next/image";
+import * as React from "react";
+import { Artist } from "../dashboard/page";
+
+
+
+interface ArtistListItemProps {
+    className?: string;
+    artist: Artist;
+    key: string;
+}
+
+const ArtistListItem = React.forwardRef(function ArtistListItem(
+    { className = "", artist }: ArtistListItemProps,
+    ref: React.ForwardedRef<HTMLDivElement>
+) {
+    return (
+        <div className={`max-w-[540px] max-h-[80px] m-auto ${className}`} ref={ref}>
+            <div className="flex items-center space-x-8 bg-grey rounded-lg p-1">
+                <Image
+                    src={artist.profile_image_url}
+                    alt="Track cover photo"
+                    width="64"
+                    height="64"
+                    className="flex-none rounded-lg"
+                    loading="lazy"
+                />
+                <div className="min-w-0 flex flex-col items-start">
+                    <h1 className="text-md text-white font-semibold leading-normal">
+                        {artist.artist_name}
+                    </h1>
+                    <h2 className="text-white text-sm italic leading-normal">
+                        {artist.genres}
+                    </h2>
+                </div>
+            </div>
+        </div>
+    );
+});
+
+export default ArtistListItem;

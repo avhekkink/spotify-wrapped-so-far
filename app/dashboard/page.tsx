@@ -8,41 +8,43 @@ import {
   fetchTop10TracksLast6Months,
 } from "../utils/apiRequests";
 import TracksListItem from "@/app/components/TracksListItem";
+import ArtistListItem from "../components/ArtistListItem";
+
+interface UserProfile {
+  country: string;
+  display_name: string;
+  email: string;
+  link_to_spotify_page: string;
+  followers: number;
+  profile_image_url: string | undefined;
+}
+
+export interface Artist {
+  id: string;
+  link_to_spotify_page: string;
+  profile_image_url: string;
+  artist_name: string;
+  genres: string[];
+  popularity: number;
+}
+
+export interface Track {
+  id: string;
+  link_to_spotify_page: string;
+  thumbnail_image_url: string;
+  track_name: string;
+  artist_name: string;
+  popularity: number;
+}
 
 const Dashboard = () => {
-  interface UserProfile {
-    country: string;
-    display_name: string;
-    email: string;
-    link_to_spotify_page: string;
-    followers: number;
-    profile_image_url: string | undefined;
-  }
-
-  interface Artist {
-    id: string;
-    link_to_spotify_page: string;
-    profile_image_url: string;
-    artist_name: string;
-    genres: string[];
-    popularity: number;
-  }
-
-  interface Track {
-    id: string;
-    link_to_spotify_page: string;
-    thumbnail_image_url: string;
-    track_name: string;
-    artist_name: string;
-    popularity: number;
-  }
 
   const [accessToken, setAccessToken] = useState("");
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [top10TracksLast6Months, setTop10TracksLast6Months] = useState<Track[]>(
     []
   );
-  const [top10artistsThisMonth, setTop10ArtistsThisMonth] = useState<Artist[]>(
+  const [top10ArtistsLast6Months, setTop10ArtistsLast6Months] = useState<Artist[]>(
     []
   );
 
@@ -70,7 +72,7 @@ const Dashboard = () => {
       accessToken && (await fetchTop10ArtistsLast6Months(accessToken));
 
     response &&
-      setTop10ArtistsThisMonth(
+      setTop10ArtistsLast6Months(
         response.items.map((artist: any): Artist => {
           return {
             id: artist.id,
@@ -114,13 +116,17 @@ const Dashboard = () => {
       {profile ? (
         <div className="flex m-5 items-center justify-between">
           <div className="flex items-center">
-            <img
-              className="inline-block h-8 w-8 rounded-full ring-2 ring-white mr-4"
-              src={profile?.profile_image_url}
-              alt="profile picture avatar"
-            />
+            {profile.profile_image_url &&
+              <Image
+                className="inline-block h-8 w-8 rounded-full ring-2 ring-white mr-4"
+                src={profile.profile_image_url}
+                alt="profile picture avatar"
+                height="32"
+                width="32"
+              />
+            }
             <h2 className="text-white font-semibold text-lg">
-              {profile?.display_name}
+              {profile.display_name}
             </h2>
           </div>
           <a
@@ -146,6 +152,18 @@ const Dashboard = () => {
             <ol className="list-decimal list-inside p-4">
               {top10TracksLast6Months.map((track) => (
                 <TracksListItem track={track} key={track.id} className="my-4" />
+              ))}
+            </ol>
+          </div>
+        ) : null}
+        {top10ArtistsLast6Months ? (
+          <div className="bg-black rounded-xl w-fit px-4 mx-auto mt-10 border border-grey">
+            <h2 className="font-bold text-lg p-4 text-white">
+              Top Artists Over The Last 6 Months
+            </h2>
+            <ol className="list-decimal list-inside p-4">
+              {top10ArtistsLast6Months.map((artist) => (
+                <ArtistListItem artist={artist} key={artist.id} className="my-4" />
               ))}
             </ol>
           </div>
