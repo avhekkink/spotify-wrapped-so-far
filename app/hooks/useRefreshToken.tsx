@@ -8,32 +8,32 @@ export default function useRefreshToken(code: string) {
   const [accessToken, setAccessToken] = useState("");
   const [refreshToken, setRefreshToken] = useState("");
 
-  const fetchToken = async () => {
-    if (code) {
-      let response = await getAccessToken(code);
-
-      if (response) {
-        setRefreshToken(response.refresh_token);
-        setAccessToken(response.access_token);
-        setExpiresIn(response.expires_in);
-        sessionStorage.setItem("access_token", response.access_token);
-      }
-    }
-  };
-
-  const refreshTokenFn = async () => {
-    let response = await refreshSpotifyToken(refreshToken);
-    setAccessToken(response.access_token);
-    setExpiresIn(response.expires_in);
-    sessionStorage.setItem("access_token", response.access_token);
-  };
-
   useEffect(() => {
+    const fetchToken = async () => {
+      if (code) {
+        let response = await getAccessToken(code);
+
+        if (response) {
+          setRefreshToken(response.refresh_token);
+          setAccessToken(response.access_token);
+          setExpiresIn(response.expires_in);
+          sessionStorage.setItem("access_token", response.access_token);
+        }
+      }
+    };
+
     fetchToken();
   }, [code]);
 
   useEffect(() => {
     if (!refreshToken || !expiresIn) return;
+
+    const refreshTokenFn = async () => {
+      let response = await refreshSpotifyToken(refreshToken);
+      setAccessToken(response.access_token);
+      setExpiresIn(response.expires_in);
+      sessionStorage.setItem("access_token", response.access_token);
+    };
 
     const interval = setInterval(() => {
       refreshTokenFn();

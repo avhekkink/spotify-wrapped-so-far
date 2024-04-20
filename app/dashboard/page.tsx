@@ -7,7 +7,7 @@ import {
   fetchTop10ArtistsLast6Months,
   fetchTop10TracksLast6Months,
 } from "../utils/apiRequests";
-import TracksListItem from "@/components/TracksListItem";
+import TracksListItem from "@/app/components/TracksListItem";
 
 const Dashboard = () => {
   interface UserProfile {

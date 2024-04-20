@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { authorize } from "@/app/utils/authorization";
-import useRefreshToken from "@/app/hooks/useRefreshToken";
+import { authorize } from "./utils/authorization";
+import useRefreshToken from "./hooks/useRefreshToken";
 import { useSearchParams } from "next/navigation";
 
 const Home = () => {
