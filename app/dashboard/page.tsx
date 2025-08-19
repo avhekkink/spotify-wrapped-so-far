@@ -38,7 +38,6 @@ export interface Track {
 }
 
 const Dashboard = () => {
-
   const [accessToken, setAccessToken] = useState("");
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [top10TracksLast6Months, setTop10TracksLast6Months] = useState<Track[]>(
@@ -49,8 +48,21 @@ const Dashboard = () => {
   );
 
   useEffect(() => {
+    // Get token from sessionStorage on mount
     let token = sessionStorage.getItem("access_token");
     setAccessToken(token || "");
+
+    // Listen for changes to sessionStorage (e.g., after login/refresh)
+    const handleStorage = (event: StorageEvent) => {
+      if (event.key === "access_token") {
+        setAccessToken(event.newValue || "");
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+
+    return () => {
+      window.removeEventListener("storage", handleStorage);
+    };
   }, []);
 
   const getProfile = async (accessToken: string) => {
@@ -106,6 +118,7 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
+    if (!accessToken) return;
     getProfile(accessToken);
     getTop10ArtistsLast6Months(accessToken);
     getTop10TracksLast6Months(accessToken);

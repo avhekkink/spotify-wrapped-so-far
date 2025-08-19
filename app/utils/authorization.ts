@@ -32,16 +32,15 @@ export const authorize = async () => {
   const codeVerifier = generateRandomString(128);
 
   const isVercelPreview = process.env.NEXT_PUBLIC_VERCEL_ENV === "preview";
-
   const isVercelProduction =
     process.env.NEXT_PUBLIC_VERCEL_ENV === "production";
 
   // Define the base URL for your web app
   let baseUrl;
   if (isVercelPreview) {
-    baseUrl = `http://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
+    baseUrl = `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`;
   } else if (isVercelProduction) {
-    baseUrl = "http://spotify-wrapped-so-far.vercel.app";
+    baseUrl = "https://spotify-wrapped-so-far.vercel.app";
   } else {
     baseUrl = "http://localhost:3000";
   }
@@ -63,12 +62,14 @@ export const authorize = async () => {
       : "value is undefined"
   );
   localStorage.setItem("redirect_uri", redirectUri);
+  console.log("PKCE authorize: redirect_uri set", redirectUri);
 
   generateCodeChallenge(codeVerifier).then((codeChallenge) => {
     const state: string = generateRandomString(16);
     const scope: string = "user-read-private user-read-email user-top-read";
 
     localStorage.setItem("code_verifier", codeVerifier);
+    console.log("PKCE authorize: code_verifier set", codeVerifier);
 
     const args = new URLSearchParams({
       response_type: "code",
@@ -86,10 +87,12 @@ export const authorize = async () => {
 
 export const getAccessToken = async (code: string) => {
   const codeVerifier = localStorage.getItem("code_verifier");
+  console.log("PKCE token exchange: code_verifier used", codeVerifier);
   const redirectUri = localStorage.getItem("redirect_uri");
+  console.log("PKCE token exchange: redirect_uri used", redirectUri);
 
   const body = new URLSearchParams({
-    grant_type: "authorization_code" || "",
+    grant_type: "authorization_code",
     code: code || "",
     redirect_uri: redirectUri || "",
     client_id: SPOTIFY_CLIENT_ID || "",
@@ -104,7 +107,9 @@ export const getAccessToken = async (code: string) => {
       },
       body: body,
     });
-    return await response.json();
+    const json = await response.json();
+    console.log("PKCE token exchange: response", json);
+    return json;
   } catch (error) {
     window.location.href = "/";
     console.error("Error:", error);
@@ -113,7 +118,7 @@ export const getAccessToken = async (code: string) => {
 
 export const refreshSpotifyToken = async (refresh_token: string) => {
   const body = new URLSearchParams({
-    grant_type: "refresh_token" || "",
+    grant_type: "refresh_token",
     refresh_token: refresh_token,
     client_id: SPOTIFY_CLIENT_ID || "",
   });
