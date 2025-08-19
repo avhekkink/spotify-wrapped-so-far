@@ -154,7 +154,7 @@ const Dashboard = () => {
           </a>
         </div>
       ) : null}
-      <div className="flex m-5 items-start justify-between">
+      <div className="flex m-4 items-start gap-4 justify-between">
         {top10TracksLast6Months ? (
           <div className="bg-black rounded-xl w-fit px-4 border border-grey mt-10 mx-auto">
             <h2 className="font-bold text-lg p-4 text-white">

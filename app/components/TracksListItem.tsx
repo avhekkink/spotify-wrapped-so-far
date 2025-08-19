@@ -20,7 +20,7 @@ const TracksListItem = React.forwardRef(function TracksListItem(
       className={`block m-auto ${className}`}
       ref={ref}
     >
-      <div className="flex items-center space-x-8 bg-grey rounded-lg p-1 hover:bg-green-700 transition-colors cursor-pointer">
+      <div className="flex items-center space-x-8 bg-grey rounded-lg p-2 hover:bg-green-700 transition-colors cursor-pointer">
         <Image
           src={track.thumbnail_image_url}
           alt="Track cover photo"
