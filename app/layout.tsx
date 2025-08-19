@@ -7,7 +7,7 @@ const inter = Roboto_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Spotify Wrapped So Far",
-  description: "Access your spotify wrapped throughout the year",
+  description: "Access your spotify wrapped throughout the year"
 };
 
 export default function RootLayout({
