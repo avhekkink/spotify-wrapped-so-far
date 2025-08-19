@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
+ :root {
   --foreground-rgb: 0, 0, 0;
   --background-start-rgb: 214, 219, 220;
   --background-end-rgb: 255, 255, 255;
+  --accent-green: #1db954;
+  --accent-green-hover: #1ed760;
+  --accent-green-ring: #1db95433;
+  --spotify-black: #191414;
 }
 
 @media (prefers-color-scheme: dark) {
@@ -13,6 +17,10 @@
     --foreground-rgb: 255, 255, 255;
     --background-start-rgb: 0, 0, 0;
     --background-end-rgb: 0, 0, 0;
+    --accent-green: #1db954;
+    --accent-green-hover: #1ed760;
+    --accent-green-ring: #1db95433;
+    --spotify-black: #191414;
   }
 }
 

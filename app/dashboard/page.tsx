@@ -40,12 +40,10 @@ export interface Track {
 const Dashboard = () => {
   const [accessToken, setAccessToken] = useState("");
   const [profile, setProfile] = useState<UserProfile | null>(null);
-  const [top10TracksLast6Months, setTop10TracksLast6Months] = useState<Track[]>(
-    []
-  );
-  const [top10ArtistsLast6Months, setTop10ArtistsLast6Months] = useState<Artist[]>(
-    []
-  );
+  const [top10TracksLast6Months, setTop10TracksLast6Months] = useState<Track[]>([]);
+  const [top10ArtistsLast6Months, setTop10ArtistsLast6Months] = useState<Artist[]>([]);
+  const [showAllTracks, setShowAllTracks] = useState(false);
+  const [showAllArtists, setShowAllArtists] = useState(false);
 
   useEffect(() => {
     // Get token from sessionStorage on mount
@@ -156,29 +154,63 @@ const Dashboard = () => {
           </a>
         </div>
       ) : null}
-      <div className="flex m-5 items-center justify-between">
+      <div className="flex m-5 items-start justify-between">
         {top10TracksLast6Months ? (
-          <div className="bg-black rounded-xl w-fit px-4 mx-auto mt-10 border border-grey">
+          <div className="bg-black rounded-xl w-fit px-4 border border-grey mt-10 mx-auto">
             <h2 className="font-bold text-lg p-4 text-white">
-              Top Tracks Over The Last 6 Months
+              Your Favourite Tracks
             </h2>
             <ol className="list-decimal list-inside p-4">
-              {top10TracksLast6Months.map((track) => (
+              {(showAllTracks ? top10TracksLast6Months : top10TracksLast6Months.slice(0, 5)).map((track) => (
                 <TracksListItem track={track} key={track.id} className="my-4" />
               ))}
             </ol>
+            {top10TracksLast6Months.length > 5 && (
+              <button
+                className="mb-4 ml-4 px-4 py-2 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
+                style={{
+                  backgroundColor: 'var(--accent-green)',
+                  color: 'var(--spotify-black)',
+                  boxShadow: '0 0 0 2px var(--accent-green-ring)',
+                }}
+                onMouseOver={e => (e.currentTarget.style.backgroundColor = 'var(--accent-green-hover)')}
+                onMouseOut={e => (e.currentTarget.style.backgroundColor = 'var(--accent-green)')}
+                onFocus={e => (e.currentTarget.style.boxShadow = '0 0 0 2px var(--accent-green-ring)')}
+                onBlur={e => (e.currentTarget.style.boxShadow = 'none')}
+                onClick={() => setShowAllTracks((prev) => !prev)}
+              >
+                {showAllTracks ? "See less" : "See more"}
+              </button>
+            )}
           </div>
         ) : null}
         {top10ArtistsLast6Months ? (
-          <div className="bg-black rounded-xl w-fit px-4 mx-auto mt-10 border border-grey">
+          <div className="bg-black rounded-xl w-fit px-4 border border-grey mt-10 mx-auto">
             <h2 className="font-bold text-lg p-4 text-white">
-              Top Artists Over The Last 6 Months
+              Your Favourite Artists
             </h2>
             <ol className="list-decimal list-inside p-4">
-              {top10ArtistsLast6Months.map((artist) => (
+              {(showAllArtists ? top10ArtistsLast6Months : top10ArtistsLast6Months.slice(0, 5)).map((artist) => (
                 <ArtistListItem artist={artist} key={artist.id} className="my-4" />
               ))}
             </ol>
+            {top10ArtistsLast6Months.length > 5 && (
+              <button
+                className="mb-4 ml-4 px-4 py-2 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
+                style={{
+                  backgroundColor: 'var(--accent-green)',
+                  color: 'var(--spotify-black)',
+                  boxShadow: '0 0 0 2px var(--accent-green-ring)',
+                }}
+                onMouseOver={e => (e.currentTarget.style.backgroundColor = 'var(--accent-green-hover)')}
+                onMouseOut={e => (e.currentTarget.style.backgroundColor = 'var(--accent-green)')}
+                onFocus={e => (e.currentTarget.style.boxShadow = '0 0 0 2px var(--accent-green-ring)')}
+                onBlur={e => (e.currentTarget.style.boxShadow = 'none')}
+                onClick={() => setShowAllArtists((prev) => !prev)}
+              >
+                {showAllArtists ? "See less" : "See more"}
+              </button>
+            )}
           </div>
         ) : null}
       </div>
