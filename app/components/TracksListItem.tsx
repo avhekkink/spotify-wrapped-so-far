@@ -10,11 +10,17 @@ interface TracksListItemProps {
 
 const TracksListItem = React.forwardRef(function TracksListItem(
   { className = "", track }: TracksListItemProps,
-  ref: React.ForwardedRef<HTMLDivElement>
+  ref: React.ForwardedRef<HTMLAnchorElement>
 ) {
   return (
-    <div className={`max-w-[540px] max-h-[80px] m-auto ${className}`} ref={ref}>
-      <div className="flex items-center space-x-8 bg-grey rounded-lg p-1">
+    <a
+      href={track.link_to_spotify_page}
+      target="_blank"
+      rel="noopener noreferrer"
+      className={`block m-auto ${className}`}
+      ref={ref}
+    >
+      <div className="flex items-center space-x-8 bg-grey rounded-lg p-1 hover:bg-green-700 transition-colors cursor-pointer">
         <Image
           src={track.thumbnail_image_url}
           alt="Track cover photo"
@@ -32,7 +38,7 @@ const TracksListItem = React.forwardRef(function TracksListItem(
           </h2>
         </div>
       </div>
-    </div>
+    </a>
   );
 });
 

@@ -19,7 +19,7 @@ const ArtistListItem = React.forwardRef(function ArtistListItem(
             href={artist.link_to_spotify_page}
             target="_blank"
             rel="noopener noreferrer"
-            className={`block max-w-[540px] max-h-[80px] m-auto ${className}`}
+            className={`block m-auto ${className}`}
             ref={ref}
         >
             <div className="flex items-center space-x-8 bg-grey rounded-lg p-1 hover:bg-green-700 transition-colors cursor-pointer">
