@@ -21,7 +21,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} flex min-h-screen`}>
         {/* Fixed Header */}
         <header
           className="fixed top-0 left-0 w-full h-16 border border-grey p-2 bg-black z-10"
@@ -35,7 +35,7 @@ export default function RootLayout({
 
         {/* Main Content */}
         <main
-          className="w-full overflow-y-auto"
+          className="w-full flex-1 overflow-y-auto flex flex-col"
           style={{
             paddingTop: HEADER_HEIGHT,
             paddingBottom: FOOTER_HEIGHT,

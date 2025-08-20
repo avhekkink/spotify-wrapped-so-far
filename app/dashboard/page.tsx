@@ -132,8 +132,8 @@ function Dashboard() {
             <Image
               src="/Spotify_Logo_RGB_Green.png"
               alt="Spotify logo in green"
-              width="105"
-              height="45"
+              width="80"
+              height="25"
             />
           </a>
         </div>
@@ -155,7 +155,7 @@ function Dashboard() {
             {top10TracksLast6Months.length > 5 && (
               <button
                 type="button"
-                className="mb-2 ml-2 px-2 py-1 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
+                className="mb-2 ml-2 px-2 py-1 rounded-full font-semibold text-black text-sm transition-colors focus:outline-none focus:ring-2"
                 style={{
                   backgroundColor: 'var(--accent-green)',
                   color: 'var(--spotify-black)',
@@ -188,7 +188,7 @@ function Dashboard() {
             {top10ArtistsLast6Months.length > 5 && (
               <button
                 type="button"
-                className="mb-2 ml-2 px-2 py-1 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
+                className="mb-2 ml-2 px-2 py-1 rounded-full font-semibold text-black text-sm transition-colors focus:outline-none focus:ring-2"
                 style={{
                   backgroundColor: 'var(--accent-green)',
                   color: 'var(--spotify-black)',
