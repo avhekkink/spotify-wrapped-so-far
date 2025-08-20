@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import './globals.css';
 import type { Metadata } from 'next';
 // Used for font optimization
@@ -27,7 +27,9 @@ export default function RootLayout({
               Explore your favourite tracks and artists
             </h4>
           </header>
-          {children}
+          <Suspense fallback={<div className="w-full h-full flex-1 overflow-y-auto place-content-center"><h1 className="text-white text-5xl py-8 self-center">Loading...</h1></div>}>
+            {children}
+          </Suspense>
           <footer className="h-16 flex-none border border-grey">
             <div className="p-4">
               <h2 className="text-white text-sm"> Spotify Wrapped So Far</h2>
