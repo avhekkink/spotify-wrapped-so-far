@@ -1,13 +1,15 @@
-import "./globals.css";
-import type { Metadata } from "next";
+import React from 'react';
+import './globals.css';
+import type { Metadata } from 'next';
 // Used for font optimization
-import { Roboto_Mono } from "next/font/google";
+// eslint-disable-next-line camelcase
+import { Roboto_Mono } from 'next/font/google';
 
-const inter = Roboto_Mono({ subsets: ["latin"] });
+const inter = Roboto_Mono({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: "Spotify Wrapped So Far",
-  description: "Access your spotify wrapped throughout the year"
+  title: 'Spotify Wrapped So Far',
+  description: 'Access your spotify wrapped throughout the year',
 };
 
 export default function RootLayout({

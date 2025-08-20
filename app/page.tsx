@@ -1,13 +1,14 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { authorize } from "./utils/authorization";
-import useRefreshToken from "./hooks/useRefreshToken";
-import { useSearchParams } from "next/navigation";
+import React from 'react';
+import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
+import { authorize } from './utils/authorization.ts';
+import useRefreshToken from './hooks/useRefreshToken.tsx';
 
-const Home = () => {
+function Home() {
   const searchParams = useSearchParams();
-  const code = searchParams.get("code");
+  const code = searchParams.get('code');
   useRefreshToken(code as string);
 
   return (
@@ -22,7 +23,7 @@ const Home = () => {
           {code ? (
             <Link href="/dashboard">Continue</Link>
           ) : (
-            <button onClick={authorize} className="btn btn-accent font-bold">
+            <button type="button" onClick={authorize} className="btn btn-accent font-bold">
               LOG IN
             </button>
           )}
@@ -30,6 +31,6 @@ const Home = () => {
       </div>
     </div>
   );
-};
+}
 
 export default Home;
