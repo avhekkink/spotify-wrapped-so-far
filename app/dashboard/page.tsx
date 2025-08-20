@@ -74,6 +74,7 @@ function Dashboard() {
             artist_name: artist.name,
             genres: artist.genres,
             popularity: artist.popularity,
+            followers: artist.followers.total,
           })),
         );
       }
@@ -106,19 +107,19 @@ function Dashboard() {
   return (
     <div className="flex-col">
       {profile ? (
-        <div className="flex m-5 items-center justify-between">
+        <div className="flex m-2 items-center justify-between">
           <div className="flex items-center">
             {profile.profile_image_url
               && (
                 <Image
-                  className="inline-block h-8 w-8 rounded-full ring-2 ring-white mr-4"
+                  className="inline-block rounded-full ring-2 ring-white mr-2"
                   src={profile.profile_image_url}
                   alt="profile picture avatar"
-                  height="32"
-                  width="32"
+                  height="24"
+                  width="24"
                 />
               )}
-            <h2 className="text-white font-semibold text-lg">
+            <h2 className="text-white text-sm">
               {profile.display_name}
             </h2>
           </div>
@@ -137,13 +138,13 @@ function Dashboard() {
           </a>
         </div>
       ) : null}
-      <div className="flex m-4 items-start gap-4 justify-between">
+      <div className="flex items-start gap-8 justify-center">
         {top10TracksLast6Months ? (
-          <div className="bg-black rounded-xl w-fit px-4 border border-grey mt-10 mx-auto">
-            <h2 className="font-bold text-lg p-4 text-white">
+          <div className="bg-black rounded-xl w-fit px-4 pb-2 border border-grey m-4">
+            <h2 className="font-bold text-lg p-2 text-white">
               Your Favourite Tracks
             </h2>
-            <ol className="list-decimal list-inside p-4">
+            <ol className="list-decimal list-inside">
               {(showAllTracks
                 ? top10TracksLast6Months
                 : top10TracksLast6Months.slice(0, 5)).map((track) => (
@@ -154,7 +155,7 @@ function Dashboard() {
             {top10TracksLast6Months.length > 5 && (
               <button
                 type="button"
-                className="mb-4 ml-4 px-4 py-2 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
+                className="mb-2 ml-2 px-2 py-1 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
                 style={{
                   backgroundColor: 'var(--accent-green)',
                   color: 'var(--spotify-black)',
@@ -172,11 +173,11 @@ function Dashboard() {
           </div>
         ) : null}
         {top10ArtistsLast6Months ? (
-          <div className="bg-black rounded-xl w-fit px-4 border border-grey mt-10 mx-auto">
-            <h2 className="font-bold text-lg p-4 text-white">
+          <div className="bg-black rounded-xl w-fit px-4 pb-2 border border-grey m-4">
+            <h2 className="font-bold text-lg p-2 text-white">
               Your Favourite Artists
             </h2>
-            <ol className="list-decimal list-inside p-4">
+            <ol className="list-decimal list-inside">
               {(showAllArtists
                 ? top10ArtistsLast6Months
                 : top10ArtistsLast6Months.slice(0, 5)).map((artist) => (
@@ -187,7 +188,7 @@ function Dashboard() {
             {top10ArtistsLast6Months.length > 5 && (
               <button
                 type="button"
-                className="mb-4 ml-4 px-4 py-2 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
+                className="mb-2 ml-2 px-2 py-1 rounded-full font-semibold text-black transition-colors focus:outline-none focus:ring-2"
                 style={{
                   backgroundColor: 'var(--accent-green)',
                   color: 'var(--spotify-black)',

@@ -5,6 +5,7 @@ export interface Artist {
   artist_name: string;
   genres: string[];
   popularity: number;
+  followers: number;
 }
 
 export interface Track {
